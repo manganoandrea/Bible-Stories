@@ -10,7 +10,9 @@ import SwiftUI
 struct ContentView: View {
     @State private var viewModel = LibraryViewModel()
     @State private var selectedBook: Book?
+    @State private var showingModeSelection = false
     @State private var showingReader = false
+    @State private var selectedMode: StoryMode = .listen
     @State private var animationPhase: AnimationPhase = .idle
     @State private var originalBookFrame: CGRect = .zero
     @Namespace private var bookAnimation
@@ -22,6 +24,8 @@ struct ContentView: View {
     private let closingPhase2Delay: Double = 0.3
     private let closingPhase3Delay: Double = 0.9
     private let closingPhase4Delay: Double = 1.3
+    private let openingZoomDelay: Double = 1.5
+    private let closingUnzoomDelay: Double = 0.1
 
     enum AnimationPhase: Equatable {
         // Opening phases
@@ -30,11 +34,51 @@ struct ContentView: View {
         case moving
         case flipping
         case revealing
-        case complete
+        case zooming       // Depth zoom into spread
+        case modeSelection // Show mode selection overlay
+        case complete      // Reading mode active
         // Closing phases
         case closing
+        case unzooming     // Reverse depth zoom
         case unflipping
         case returning
+    }
+
+    // MARK: - Library Effect Properties
+
+    private var libraryScale: CGFloat {
+        switch animationPhase {
+        case .zooming, .modeSelection, .complete, .closing:
+            return 0.85
+        case .unzooming:
+            return 0.925
+        default:
+            return 1.0
+        }
+    }
+
+    private var libraryBlur: CGFloat {
+        switch animationPhase {
+        case .idle:
+            return 0
+        case .selected, .moving, .flipping, .revealing:
+            return 10
+        case .zooming, .modeSelection, .complete, .closing:
+            return 25
+        case .unzooming:
+            return 17.5
+        case .unflipping, .returning:
+            return 10
+        }
+    }
+
+    private var libraryOpacity: Double {
+        switch animationPhase {
+        case .zooming, .modeSelection, .complete, .closing:
+            return 0.0
+        default:
+            return 1.0
+        }
     }
 
     var body: some View {
@@ -48,11 +92,16 @@ struct ContentView: View {
                         handleBookTap(book, frame: frame)
                     }
                 )
-                .blur(radius: animationPhase != .idle ? 10 : 0)
-                .animation(.easeOut(duration: 0.2), value: animationPhase)
+                .scaleEffect(libraryScale)
+                .blur(radius: libraryBlur)
+                .opacity(libraryOpacity)
+                .animation(.easeOut(duration: 0.3), value: animationPhase)
 
                 // Book Opening Animation Overlay
-                if let book = selectedBook, animationPhase != .idle {
+                if let book = selectedBook,
+                   animationPhase != .idle,
+                   animationPhase != .modeSelection,
+                   animationPhase != .complete {
                     BookOpeningView(
                         book: book,
                         phase: $animationPhase,
@@ -60,17 +109,44 @@ struct ContentView: View {
                         originalFrame: originalBookFrame,
                         onComplete: {
                             withAnimation(.easeOut(duration: 0.3)) {
-                                showingReader = true
-                                animationPhase = .complete
+                                showingModeSelection = true
+                                animationPhase = .modeSelection
                             }
                         }
                     )
+                }
+
+                // Mode Selection Overlay
+                if showingModeSelection, let book = selectedBook {
+                    StoryModeSelectionView(
+                        book: book,
+                        onModeSelected: { mode in
+                            selectedMode = mode
+                            withAnimation(.easeOut(duration: 0.3)) {
+                                showingModeSelection = false
+                                showingReader = true
+                                animationPhase = .complete
+                            }
+                        },
+                        onClose: {
+                            withAnimation(.easeOut(duration: 0.3)) {
+                                showingModeSelection = false
+                            }
+                            closeBook()
+                        },
+                        onMusicToggle: {
+                            viewModel.toggleMusic()
+                        },
+                        isMusicEnabled: viewModel.isMusicEnabled
+                    )
+                    .transition(.opacity)
                 }
 
                 // Story Reader (full screen when open)
                 if showingReader, let book = selectedBook {
                     StoryReaderView(
                         book: book,
+                        initialMode: selectedMode,
                         onClose: {
                             closeBook()
                         }
@@ -81,6 +157,9 @@ struct ContentView: View {
         }
         .ignoresSafeArea()
         .statusBarHidden()
+        .onAppear {
+            viewModel.startMusic()
+        }
     }
 
     private func handleBookTap(_ book: Book, frame: CGRect) {
@@ -89,6 +168,9 @@ struct ContentView: View {
 
         selectedBook = book
         originalBookFrame = frame
+
+        // Fade out library music
+        viewModel.fadeOutMusic()
 
         // Start animation sequence
         withAnimation(.spring(duration: 0.2)) {
@@ -115,35 +197,52 @@ struct ContentView: View {
                 animationPhase = .revealing
             }
         }
+
+        // Phase 5: Zoom into spread
+        DispatchQueue.main.asyncAfter(deadline: .now() + openingZoomDelay) {
+            withAnimation(.easeInOut(duration: 0.4)) {
+                animationPhase = .zooming
+            }
+        }
     }
 
     private func closeBook() {
-        // Phase 1: Closing - reader fades, book appears
+        // Phase 1: Unzoom - library starts returning
         withAnimation(.easeOut(duration: 0.3)) {
             showingReader = false
-            animationPhase = .closing
+            showingModeSelection = false
+            animationPhase = .unzooming
         }
 
-        // Phase 2: Unflipping - book cover flips closed
+        // Phase 2: Closing - book appears at spread
+        DispatchQueue.main.asyncAfter(deadline: .now() + closingUnzoomDelay) {
+            withAnimation(.easeOut(duration: 0.3)) {
+                animationPhase = .closing
+            }
+        }
+
+        // Phase 3: Unflipping - book cover flips closed
         DispatchQueue.main.asyncAfter(deadline: .now() + closingPhase2Delay) {
             withAnimation(.spring(duration: 0.6, bounce: 0.05)) {
                 animationPhase = .unflipping
             }
         }
 
-        // Phase 3: Returning - book shrinks and moves back
+        // Phase 4: Returning - book shrinks and moves back
         DispatchQueue.main.asyncAfter(deadline: .now() + closingPhase3Delay) {
             withAnimation(.spring(duration: 0.4, bounce: 0.15)) {
                 animationPhase = .returning
             }
         }
 
-        // Phase 4: Idle - complete
+        // Phase 5: Idle - complete
         DispatchQueue.main.asyncAfter(deadline: .now() + closingPhase4Delay) {
             withAnimation(.easeOut(duration: 0.2)) {
                 animationPhase = .idle
                 selectedBook = nil
             }
+            // Fade in library music
+            viewModel.fadeInMusic()
         }
     }
 }

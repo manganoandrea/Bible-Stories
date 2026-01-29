@@ -79,13 +79,21 @@ struct LibraryView: View {
 
             // Music toggle
             StickerIconButton(
-                systemName: viewModel.isMusicPlaying ? "speaker.wave.2.fill" : "speaker.slash.fill",
+                systemName: viewModel.isMusicEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill",
                 action: {
                     viewModel.toggleMusic()
                 }
             )
             .padding(.leading, 12)
         }
+    }
+}
+
+// MARK: - View Lifecycle Extension
+
+extension LibraryView {
+    func onLibraryAppear() {
+        viewModel.startMusic()
     }
 }
 

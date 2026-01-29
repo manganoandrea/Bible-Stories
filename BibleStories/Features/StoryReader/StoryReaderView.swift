@@ -9,11 +9,25 @@ import SwiftUI
 
 struct StoryReaderView: View {
     let book: Book
+    let initialMode: StoryMode
     let onClose: () -> Void
 
     @State private var currentPage: Int = 0
     @State private var audioPlayer = AudioNarrationPlayer()
-    @State private var autoAdvance: Bool = true
+    @State private var currentMode: StoryMode
+    @State private var isUIHidden: Bool = false
+    @State private var showingPageGrid: Bool = false
+
+    init(book: Book, initialMode: StoryMode = .listen, onClose: @escaping () -> Void) {
+        self.book = book
+        self.initialMode = initialMode
+        self.onClose = onClose
+        self._currentMode = State(initialValue: initialMode)
+    }
+
+    private var isListenMode: Bool {
+        currentMode == .listen
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -26,8 +40,9 @@ struct StoryReaderView: View {
                             pageNumber: index,
                             totalPages: book.pages.count,
                             isPlaying: audioPlayer.isPlaying && currentPage == index,
+                            showFrame: !isUIHidden,
                             onTapToPlay: {
-                                audioPlayer.togglePlayback()
+                                toggleUIVisibility()
                             }
                         )
                         .tag(index)
@@ -36,18 +51,46 @@ struct StoryReaderView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .ignoresSafeArea()
 
-                // UI Overlay
-                VStack {
-                    // Top bar
-                    topBar
-                        .padding(.horizontal, 24)
-                        .padding(.top, 16)
+                // UI Overlay (hidden in immersive mode)
+                if !isUIHidden {
+                    VStack {
+                        // Top bar
+                        topBar
+                            .padding(.horizontal, 24)
+                            .padding(.top, 16)
 
-                    Spacer()
+                        Spacer()
 
-                    // Bottom controls
-                    bottomControls
-                        .padding(.bottom, 24)
+                        // Bottom controls
+                        bottomControls
+                            .padding(.bottom, 24)
+                    }
+                    .transition(.opacity)
+                }
+
+                // Audio playing indicator (visible even when UI hidden)
+                if isUIHidden && audioPlayer.isPlaying {
+                    audioPlayingIndicator
+                }
+
+                // Page Grid Overlay
+                if showingPageGrid {
+                    PageGridOverlay(
+                        book: book,
+                        currentPage: currentPage,
+                        onPageSelected: { page in
+                            currentPage = page
+                            withAnimation(.easeOut(duration: 0.3)) {
+                                showingPageGrid = false
+                            }
+                        },
+                        onClose: {
+                            withAnimation(.easeOut(duration: 0.3)) {
+                                showingPageGrid = false
+                            }
+                        }
+                    )
+                    .transition(.opacity)
                 }
             }
         }
@@ -63,11 +106,46 @@ struct StoryReaderView: View {
         }
     }
 
+    // MARK: - UI Visibility
+
+    private func toggleUIVisibility() {
+        withAnimation(.easeOut(duration: 0.3)) {
+            isUIHidden.toggle()
+        }
+        triggerHaptic()
+    }
+
+    private var audioPlayingIndicator: some View {
+        VStack {
+            HStack {
+                Spacer()
+                // Pulsing audio indicator
+                Circle()
+                    .fill(AppColors.gold.opacity(0.8))
+                    .frame(width: 12, height: 12)
+                    .overlay(
+                        Circle()
+                            .stroke(AppColors.gold, lineWidth: 2)
+                            .scaleEffect(1.5)
+                            .opacity(0)
+                            .animation(
+                                .easeOut(duration: 1.0)
+                                .repeatForever(autoreverses: false),
+                                value: audioPlayer.isPlaying
+                            )
+                    )
+                    .padding(.trailing, 20)
+                    .padding(.top, 20)
+            }
+            Spacer()
+        }
+    }
+
     private var topBar: some View {
         HStack {
-            // Close button
+            // Home/Close button
             StickerIconButton(
-                systemName: "xmark",
+                systemName: "house.fill",
                 action: onClose,
                 size: 44,
                 iconSize: 18
@@ -75,30 +153,27 @@ struct StoryReaderView: View {
 
             Spacer()
 
-            // Book title
-            Text(book.title)
-                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                .foregroundStyle(AppColors.textPrimary)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .background(
-                    Capsule()
-                        .fill(AppColors.celestialDeep.opacity(0.7))
-                        .overlay(
-                            Capsule()
-                                .strokeBorder(AppColors.stickerBorder.opacity(0.5), lineWidth: 2)
-                        )
-                )
+            // Contents button (center)
+            StickerIconButton(
+                systemName: "square.grid.2x2.fill",
+                action: {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        showingPageGrid = true
+                    }
+                },
+                size: 44,
+                iconSize: 18
+            )
 
             Spacer()
 
-            // Auto-advance toggle
+            // Mode toggle (Read/Listen)
             StickerIconButton(
-                systemName: autoAdvance ? "forward.fill" : "forward",
-                action: { autoAdvance.toggle() },
+                systemName: currentMode.icon,
+                action: { toggleMode() },
                 size: 44,
                 iconSize: 18,
-                backgroundColor: autoAdvance ? AppColors.gold.opacity(0.3) : AppColors.celestialMid
+                backgroundColor: isListenMode ? AppColors.gold.opacity(0.3) : AppColors.celestialMid
             )
         }
     }
@@ -147,11 +222,26 @@ struct StoryReaderView: View {
 
     private func setupAudioPlayer() {
         audioPlayer.onPlaybackComplete = { [self] in
-            if autoAdvance && currentPage < book.pages.count - 1 {
+            if isListenMode && currentPage < book.pages.count - 1 {
                 withAnimation(.spring(duration: 0.3)) {
                     currentPage += 1
                 }
             }
+        }
+    }
+
+    private func toggleMode() {
+        currentMode = isListenMode ? .read : .listen
+
+        // If switching to Listen mode, start playing current page audio
+        if isListenMode {
+            if let audioFile = book.pages[currentPage].audioFile {
+                audioPlayer.load(audioFile: audioFile)
+                audioPlayer.play()
+            }
+        } else {
+            // If switching to Read mode, stop audio
+            audioPlayer.stop()
         }
     }
 
@@ -163,6 +253,11 @@ struct StoryReaderView: View {
         let page = book.pages[pageIndex]
         if let audioFile = page.audioFile {
             audioPlayer.load(audioFile: audioFile)
+
+            // Auto-play in Listen mode
+            if isListenMode {
+                audioPlayer.play()
+            }
 
             // Preload next page audio
             if pageIndex + 1 < book.pages.count,
@@ -197,6 +292,7 @@ struct StoryReaderView: View {
 #Preview {
     StoryReaderView(
         book: .adamAndEve,
+        initialMode: .listen,
         onClose: {}
     )
 }

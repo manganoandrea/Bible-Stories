@@ -12,32 +12,101 @@ struct StoryPageView: View {
     let pageNumber: Int
     let totalPages: Int
     let isPlaying: Bool
+    let showFrame: Bool
     let onTapToPlay: () -> Void
+
+    @State private var frameColor: Color = .gray
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Full-bleed illustration
-                pageImage(size: geometry.size)
-
-                // Text overlay at bottom
-                VStack {
-                    Spacer()
-
-                    textOverlay
-                        .frame(maxWidth: geometry.size.width * 0.85)
-                        .padding(.bottom, 80)
-                }
-
-                // Play indicator
-                if !isPlaying {
-                    playIndicator
+                if showFrame {
+                    // Framed illustration with adaptive color
+                    framedContent(size: geometry.size)
+                } else {
+                    // Full-bleed illustration (immersive mode)
+                    fullBleedContent(size: geometry.size)
                 }
             }
         }
         .contentShape(Rectangle())
         .onTapGesture {
             onTapToPlay()
+        }
+        .onAppear {
+            extractFrameColor()
+        }
+        .onChange(of: page.imageAsset) { _, _ in
+            withAnimation(.easeInOut(duration: 0.3)) {
+                extractFrameColor()
+            }
+        }
+    }
+
+    // MARK: - Content Views
+
+    @ViewBuilder
+    private func framedContent(size: CGSize) -> some View {
+        let frameWidth: CGFloat = 12
+        let framePadding: CGFloat = 16
+        let availableSize = CGSize(
+            width: size.width - (frameWidth + framePadding) * 2,
+            height: size.height - (frameWidth + framePadding) * 2
+        )
+
+        ZStack {
+            // Background
+            Color.black.opacity(0.9)
+
+            VStack {
+                // Framed image
+                pageImage(size: availableSize)
+                    .frame(width: availableSize.width, height: availableSize.height * 0.75)
+                    .adaptiveFrame(color: frameColor, width: frameWidth)
+
+                Spacer()
+
+                // Text overlay below frame
+                textOverlay
+                    .frame(maxWidth: size.width * 0.85)
+                    .padding(.bottom, 24)
+            }
+            .padding(.top, framePadding)
+
+            // Play indicator (top right of frame)
+            if !isPlaying {
+                playIndicator
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func fullBleedContent(size: CGSize) -> some View {
+        ZStack {
+            // Full-bleed illustration
+            pageImage(size: size)
+
+            // Text overlay at bottom
+            VStack {
+                Spacer()
+
+                textOverlay
+                    .frame(maxWidth: size.width * 0.85)
+                    .padding(.bottom, 80)
+            }
+
+            // Play indicator
+            if !isPlaying {
+                playIndicator
+            }
+        }
+    }
+
+    // MARK: - Helper Methods
+
+    private func extractFrameColor() {
+        if let image = UIImage(named: page.imageAsset) {
+            frameColor = image.dominantColorFromEdges()
         }
     }
 
@@ -116,7 +185,7 @@ struct StoryPageView: View {
     }
 }
 
-#Preview {
+#Preview("With Frame") {
     StoryPageView(
         page: StoryPage(
             imageAsset: "page_00",
@@ -126,6 +195,22 @@ struct StoryPageView: View {
         pageNumber: 0,
         totalPages: 12,
         isPlaying: false,
+        showFrame: true,
+        onTapToPlay: {}
+    )
+}
+
+#Preview("Full Bleed") {
+    StoryPageView(
+        page: StoryPage(
+            imageAsset: "page_00",
+            narrationText: "In the beginning, God created the heavens and the earth.",
+            audioFile: "page_00_audio"
+        ),
+        pageNumber: 0,
+        totalPages: 12,
+        isPlaying: false,
+        showFrame: false,
         onTapToPlay: {}
     )
 }

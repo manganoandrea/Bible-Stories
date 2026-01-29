@@ -12,7 +12,15 @@ import Observation
 final class LibraryViewModel {
     var books: [Book]
     var selectedBookID: UUID?
-    var isMusicPlaying: Bool = true
+    let musicPlayer = LibraryMusicPlayer()
+
+    var isMusicPlaying: Bool {
+        musicPlayer.isPlaying
+    }
+
+    var isMusicEnabled: Bool {
+        musicPlayer.isMusicEnabled
+    }
 
     init(books: [Book] = Book.sampleLibrary) {
         self.books = books
@@ -47,6 +55,18 @@ final class LibraryViewModel {
     }
 
     func toggleMusic() {
-        isMusicPlaying.toggle()
+        musicPlayer.toggle()
+    }
+
+    func startMusic() {
+        musicPlayer.play()
+    }
+
+    func fadeOutMusic(completion: (() -> Void)? = nil) {
+        musicPlayer.fadeOut(completion: completion)
+    }
+
+    func fadeInMusic(completion: (() -> Void)? = nil) {
+        musicPlayer.fadeIn(completion: completion)
     }
 }

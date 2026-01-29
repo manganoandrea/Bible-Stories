@@ -2,7 +2,7 @@
 //  BookOpeningView.swift
 //  BibleStories
 //
-//  Orchestrates opening and closing book animations with 3D effects.
+//  Orchestrates opening and closing book animations with 3D effects and spread display.
 //
 
 import SwiftUI
@@ -16,23 +16,27 @@ struct BookOpeningView: View {
 
     @State private var flipAngle: Double = 0
     @State private var coverImage: UIImage?
-    @State private var firstPageImage: UIImage?
+    @State private var leftHalfImage: UIImage?
+    @State private var rightHalfImage: UIImage?
 
     private var coordinator: TransitionCoordinator {
         TransitionCoordinator(screenSize: screenSize)
     }
 
-    private let baseSpineWidth: CGFloat = 14
+    private let baseSpineWidth: CGFloat = 18 // Thicker base for more prominent 3D effect
     private let bookCoverSize = CGSize(width: 200, height: 280)
     private let bookSelectedScale: CGFloat = 1.05
+    private let zoomScaleFactor: CGFloat = 0.95
 
     var body: some View {
         Book3DView(
             coverImage: coverImage,
-            firstPageImage: firstPageImage,
+            leftHalfImage: leftHalfImage,
+            rightHalfImage: rightHalfImage,
             size: currentSize,
             flipAngle: flipAngle,
-            spineWidth: currentSpineWidth
+            spineWidth: currentSpineWidth,
+            showSpread: showSpread
         )
         .position(currentPosition)
         .onChange(of: phase) { _, newPhase in
@@ -45,6 +49,20 @@ struct BookOpeningView: View {
 
     // MARK: - Computed Properties
 
+    private var showSpread: Bool {
+        switch phase {
+        case .revealing, .zooming, .complete, .closing, .unzooming:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private var zoomScale: CGFloat {
+        let targetWidth = screenSize.width * zoomScaleFactor
+        return targetWidth / coordinator.readerSize.width
+    }
+
     private var currentSize: CGSize {
         switch phase {
         case .idle, .returning:
@@ -56,8 +74,14 @@ struct BookOpeningView: View {
             )
         case .moving, .flipping, .unflipping:
             return coordinator.centeredBookSize
-        case .revealing, .complete, .closing:
+        case .revealing, .unzooming:
             return coordinator.readerSize
+        case .zooming, .complete, .closing:
+            // Scale up for zoom effect
+            return CGSize(
+                width: coordinator.readerSize.width * zoomScale,
+                height: coordinator.readerSize.height * zoomScale
+            )
         }
     }
 
@@ -65,7 +89,7 @@ struct BookOpeningView: View {
         switch phase {
         case .idle, .selected, .returning:
             return CGPoint(x: originalFrame.midX, y: originalFrame.midY)
-        case .moving, .flipping, .unflipping, .revealing, .complete, .closing:
+        case .moving, .flipping, .unflipping, .revealing, .zooming, .complete, .closing, .unzooming:
             return coordinator.screenCenter
         }
     }
@@ -79,8 +103,10 @@ struct BookOpeningView: View {
 
     private func loadImages() {
         coverImage = UIImage(named: book.coverImage)
-        if let firstPage = book.pages.first {
-            firstPageImage = UIImage(named: firstPage.imageAsset)
+        if let firstPage = book.pages.first,
+           let pageImage = UIImage(named: firstPage.imageAsset) {
+            leftHalfImage = pageImage.leftHalf()
+            rightHalfImage = pageImage.rightHalf()
         }
     }
 
@@ -92,12 +118,19 @@ struct BookOpeningView: View {
                 flipAngle = 180
             }
         case .revealing:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
-                guard phase == .revealing else { return }
+            // Spread is now visible, wait for zoom phase
+            break
+        case .zooming:
+            // Zoom handled by currentSize, trigger completion after animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [self] in
+                guard phase == .zooming else { return }
                 onComplete()
             }
 
         // Closing phases
+        case .unzooming:
+            // Library starts returning, book still visible
+            break
         case .closing:
             // Book appears at full flip (already open)
             flipAngle = 180
