@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		122108CC9CB10EFE459C646A /* Book3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654A7F910B6C3D9174713D21 /* Book3DView.swift */; };
 		B10000001 /* BibleStoriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000011 /* BibleStoriesApp.swift */; };
 		B10000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000012 /* ContentView.swift */; };
 		B10000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000013 /* Assets.xcassets */; };
@@ -28,10 +29,12 @@
 		B10000025 /* PageFlipGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000026 /* PageFlipGesture.swift */; };
 		B10000027 /* StoryPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000028 /* StoryPageView.swift */; };
 		B10000029 /* StoryReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002A /* StoryReaderView.swift */; };
+		D2BCFB25BE29F8EA1ACF037A /* UIImage+ColorExtraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B10000030 /* BibleStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BibleStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorExtraction.swift"; sourceTree = "<group>"; };
+		654A7F910B6C3D9174713D21 /* Book3DView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Book3DView.swift; sourceTree = "<group>"; };
 		B10000011 /* BibleStoriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleStoriesApp.swift; sourceTree = "<group>"; };
 		B10000012 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B10000013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -53,6 +56,7 @@
 		B10000026 /* PageFlipGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFlipGesture.swift; sourceTree = "<group>"; };
 		B10000028 /* StoryPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPageView.swift; sourceTree = "<group>"; };
 		B1000002A /* StoryReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryReaderView.swift; sourceTree = "<group>"; };
+		B10000030 /* BibleStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BibleStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8AD6121522BC80FC68788EDA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */,
+			);
+			name = Extensions;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		B10000040 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +96,7 @@
 				B10000046 /* Components */,
 				B10000047 /* Styles */,
 				B10000048 /* Resources */,
+				8AD6121522BC80FC68788EDA /* Extensions */,
 			);
 			path = BibleStories;
 			sourceTree = "<group>";
@@ -167,6 +181,7 @@
 				B10000022 /* BookOpeningView.swift */,
 				B1000001F /* Book3DFlipModifier.swift */,
 				B10000020 /* TransitionCoordinator.swift */,
+				654A7F910B6C3D9174713D21 /* Book3DView.swift */,
 			);
 			path = BookTransition;
 			sourceTree = "<group>";
@@ -271,6 +286,8 @@
 				B10000025 /* PageFlipGesture.swift in Sources */,
 				B10000027 /* StoryPageView.swift in Sources */,
 				B10000029 /* StoryReaderView.swift in Sources */,
+				D2BCFB25BE29F8EA1ACF037A /* UIImage+ColorExtraction.swift in Sources */,
+				122108CC9CB10EFE459C646A /* Book3DView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

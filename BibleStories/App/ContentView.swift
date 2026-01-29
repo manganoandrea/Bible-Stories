@@ -55,7 +55,6 @@ struct ContentView: View {
                 if let book = selectedBook, animationPhase != .idle {
                     BookOpeningView(
                         book: book,
-                        namespace: bookAnimation,
                         phase: $animationPhase,
                         screenSize: geometry.size,
                         originalFrame: originalBookFrame,

@@ -2,131 +2,113 @@
 //  BookOpeningView.swift
 //  BibleStories
 //
-//  Orchestrates the 4-phase book opening animation.
+//  Orchestrates opening and closing book animations with 3D effects.
 //
 
 import SwiftUI
 
 struct BookOpeningView: View {
     let book: Book
-    let namespace: Namespace.ID
     @Binding var phase: ContentView.AnimationPhase
     let screenSize: CGSize
+    let originalFrame: CGRect
     let onComplete: () -> Void
 
     @State private var flipAngle: Double = 0
-    @State private var showFirstPage: Bool = false
+    @State private var coverImage: UIImage?
+    @State private var firstPageImage: UIImage?
 
     private var coordinator: TransitionCoordinator {
         TransitionCoordinator(screenSize: screenSize)
     }
 
-    var body: some View {
-        ZStack {
-            // First page preview (revealed during flip)
-            if showFirstPage, let firstPage = book.pages.first {
-                firstPagePreview(page: firstPage)
-                    .opacity(flipAngle > 90 ? 1 : 0)
-            }
+    private let baseSpineWidth: CGFloat = 14
+    private let bookCoverSize = CGSize(width: 200, height: 280)
+    private let bookSelectedScale: CGFloat = 1.05
 
-            // Book cover (flips open)
-            bookCover
-                .book3DFlip(angle: -flipAngle, perspective: 0.5, anchor: .leading)
-                .opacity(flipAngle < 170 ? 1 : 0)
-        }
-        .frame(width: currentSize.width, height: currentSize.height)
-        .position(coordinator.screenCenter)
+    var body: some View {
+        Book3DView(
+            coverImage: coverImage,
+            firstPageImage: firstPageImage,
+            size: currentSize,
+            flipAngle: flipAngle,
+            spineWidth: currentSpineWidth
+        )
+        .position(currentPosition)
         .onChange(of: phase) { _, newPhase in
             handlePhaseChange(newPhase)
         }
+        .onAppear {
+            loadImages()
+        }
     }
+
+    // MARK: - Computed Properties
 
     private var currentSize: CGSize {
         switch phase {
-        case .idle:
-            return CGSize(width: 200, height: 280)
+        case .idle, .returning:
+            return bookCoverSize
         case .selected:
-            return CGSize(width: 210, height: 294)
-        case .moving, .flipping:
+            return CGSize(
+                width: bookCoverSize.width * bookSelectedScale,
+                height: bookCoverSize.height * bookSelectedScale
+            )
+        case .moving, .flipping, .unflipping:
             return coordinator.centeredBookSize
-        case .revealing, .complete:
+        case .revealing, .complete, .closing:
             return coordinator.readerSize
         }
     }
 
-    @ViewBuilder
-    private var bookCover: some View {
-        if let uiImage = UIImage(named: book.coverImage) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: currentSize.width, height: currentSize.height)
-                .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(AppColors.stickerBorder, lineWidth: 3)
-                )
-                .shadow(color: AppColors.stickerShadow, radius: 12, x: 0, y: 6)
-        } else {
-            placeholderCover
+    private var currentPosition: CGPoint {
+        switch phase {
+        case .idle, .selected, .returning:
+            return CGPoint(x: originalFrame.midX, y: originalFrame.midY)
+        case .moving, .flipping, .unflipping, .revealing, .complete, .closing:
+            return coordinator.screenCenter
         }
     }
 
-    private var placeholderCover: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(AppColors.celestialMid)
-
-            VStack(spacing: 12) {
-                Image(systemName: "book.closed.fill")
-                    .font(.system(size: 48))
-                    .foregroundStyle(AppColors.gold)
-
-                Text(book.title)
-                    .font(.headline)
-                    .foregroundStyle(AppColors.textPrimary)
-            }
-        }
-        .frame(width: currentSize.width, height: currentSize.height)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(AppColors.stickerBorder, lineWidth: 3)
-        )
-        .shadow(color: AppColors.stickerShadow, radius: 12, x: 0, y: 6)
+    private var currentSpineWidth: CGFloat {
+        let scale = currentSize.width / bookCoverSize.width
+        return baseSpineWidth * scale
     }
 
-    @ViewBuilder
-    private func firstPagePreview(page: StoryPage) -> some View {
-        if let uiImage = UIImage(named: page.imageAsset) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: currentSize.width, height: currentSize.height)
-                .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(AppColors.stickerBorder, lineWidth: 3)
-                )
-        } else {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(AppColors.celestialLight)
-                .frame(width: currentSize.width, height: currentSize.height)
+    // MARK: - Methods
+
+    private func loadImages() {
+        coverImage = UIImage(named: book.coverImage)
+        if let firstPage = book.pages.first {
+            firstPageImage = UIImage(named: firstPage.imageAsset)
         }
     }
 
     private func handlePhaseChange(_ newPhase: ContentView.AnimationPhase) {
         switch newPhase {
+        // Opening phases
         case .flipping:
-            showFirstPage = true
             withAnimation(.spring(duration: 0.6, bounce: 0.1)) {
                 flipAngle = 180
             }
         case .revealing:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+                guard phase == .revealing else { return }
                 onComplete()
             }
+
+        // Closing phases
+        case .closing:
+            // Book appears at full flip (already open)
+            flipAngle = 180
+        case .unflipping:
+            withAnimation(.spring(duration: 0.6, bounce: 0.05)) {
+                flipAngle = 0
+            }
+        case .returning:
+            // Size and position animate via currentSize/currentPosition
+            break
+
         default:
             break
         }
@@ -134,7 +116,6 @@ struct BookOpeningView: View {
 }
 
 #Preview {
-    @Previewable @Namespace var namespace
     @Previewable @State var phase: ContentView.AnimationPhase = .moving
 
     ZStack {
@@ -143,9 +124,9 @@ struct BookOpeningView: View {
 
         BookOpeningView(
             book: .adamAndEve,
-            namespace: namespace,
             phase: $phase,
             screenSize: CGSize(width: 1024, height: 768),
+            originalFrame: CGRect(x: 100, y: 200, width: 200, height: 280),
             onComplete: {}
         )
     }
