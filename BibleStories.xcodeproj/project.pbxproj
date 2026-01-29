@@ -1,0 +1,491 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B10000001 /* BibleStoriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000011 /* BibleStoriesApp.swift */; };
+		B10000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000012 /* ContentView.swift */; };
+		B10000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000013 /* Assets.xcassets */; };
+		B10000004 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000014 /* Book.swift */; };
+		B10000005 /* StoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000015 /* StoryPage.swift */; };
+		B10000006 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000016 /* AppColors.swift */; };
+		B10000007 /* StickerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000017 /* StickerStyle.swift */; };
+		B10000008 /* StickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000018 /* StickerButton.swift */; };
+		B10000009 /* LockOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000019 /* LockOverlay.swift */; };
+		B1000000A /* GiftBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001A /* GiftBadge.swift */; };
+		B1000000B /* CelestialVaultBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001B /* CelestialVaultBackground.swift */; };
+		B1000000C /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001C /* LibraryViewModel.swift */; };
+		B1000000D /* BookCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001D /* BookCoverView.swift */; };
+		B1000000E /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001E /* LibraryView.swift */; };
+		B1000000F /* Book3DFlipModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001F /* Book3DFlipModifier.swift */; };
+		B10000010 /* TransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000020 /* TransitionCoordinator.swift */; };
+		B10000021 /* BookOpeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000022 /* BookOpeningView.swift */; };
+		B10000023 /* AudioNarrationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000024 /* AudioNarrationPlayer.swift */; };
+		B10000025 /* PageFlipGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000026 /* PageFlipGesture.swift */; };
+		B10000027 /* StoryPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000028 /* StoryPageView.swift */; };
+		B10000029 /* StoryReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002A /* StoryReaderView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B10000030 /* BibleStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BibleStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000011 /* BibleStoriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleStoriesApp.swift; sourceTree = "<group>"; };
+		B10000012 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B10000013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10000014 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		B10000015 /* StoryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPage.swift; sourceTree = "<group>"; };
+		B10000016 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		B10000017 /* StickerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerStyle.swift; sourceTree = "<group>"; };
+		B10000018 /* StickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerButton.swift; sourceTree = "<group>"; };
+		B10000019 /* LockOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockOverlay.swift; sourceTree = "<group>"; };
+		B1000001A /* GiftBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftBadge.swift; sourceTree = "<group>"; };
+		B1000001B /* CelestialVaultBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CelestialVaultBackground.swift; sourceTree = "<group>"; };
+		B1000001C /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
+		B1000001D /* BookCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverView.swift; sourceTree = "<group>"; };
+		B1000001E /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		B1000001F /* Book3DFlipModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book3DFlipModifier.swift; sourceTree = "<group>"; };
+		B10000020 /* TransitionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionCoordinator.swift; sourceTree = "<group>"; };
+		B10000022 /* BookOpeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookOpeningView.swift; sourceTree = "<group>"; };
+		B10000024 /* AudioNarrationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioNarrationPlayer.swift; sourceTree = "<group>"; };
+		B10000026 /* PageFlipGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFlipGesture.swift; sourceTree = "<group>"; };
+		B10000028 /* StoryPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPageView.swift; sourceTree = "<group>"; };
+		B1000002A /* StoryReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryReaderView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1000002D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B10000040 = {
+			isa = PBXGroup;
+			children = (
+				B10000041 /* BibleStories */,
+				B10000042 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B10000041 /* BibleStories */ = {
+			isa = PBXGroup;
+			children = (
+				B10000043 /* App */,
+				B10000044 /* Features */,
+				B10000045 /* Models */,
+				B10000046 /* Components */,
+				B10000047 /* Styles */,
+				B10000048 /* Resources */,
+			);
+			path = BibleStories;
+			sourceTree = "<group>";
+		};
+		B10000042 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B10000030 /* BibleStories.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B10000043 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B10000011 /* BibleStoriesApp.swift */,
+				B10000012 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B10000044 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				B10000049 /* Library */,
+				B1000004A /* BookTransition */,
+				B1000004B /* StoryReader */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		B10000045 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10000014 /* Book.swift */,
+				B10000015 /* StoryPage.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B10000046 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B10000018 /* StickerButton.swift */,
+				B10000019 /* LockOverlay.swift */,
+				B1000001A /* GiftBadge.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B10000047 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				B10000016 /* AppColors.swift */,
+				B10000017 /* StickerStyle.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		B10000048 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B10000013 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B10000049 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				B1000001E /* LibraryView.swift */,
+				B1000001D /* BookCoverView.swift */,
+				B1000001B /* CelestialVaultBackground.swift */,
+				B1000001C /* LibraryViewModel.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		B1000004A /* BookTransition */ = {
+			isa = PBXGroup;
+			children = (
+				B10000022 /* BookOpeningView.swift */,
+				B1000001F /* Book3DFlipModifier.swift */,
+				B10000020 /* TransitionCoordinator.swift */,
+			);
+			path = BookTransition;
+			sourceTree = "<group>";
+		};
+		B1000004B /* StoryReader */ = {
+			isa = PBXGroup;
+			children = (
+				B1000002A /* StoryReaderView.swift */,
+				B10000028 /* StoryPageView.swift */,
+				B10000024 /* AudioNarrationPlayer.swift */,
+				B10000026 /* PageFlipGesture.swift */,
+			);
+			path = StoryReader;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B1000002F /* BibleStories */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B10000050 /* Build configuration list for PBXNativeTarget "BibleStories" */;
+			buildPhases = (
+				B1000002C /* Sources */,
+				B1000002D /* Frameworks */,
+				B1000002E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BibleStories;
+			productName = BibleStories;
+			productReference = B10000030 /* BibleStories.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B10000051 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					B1000002F = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = B10000052 /* Build configuration list for PBXProject "BibleStories" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B10000040;
+			productRefGroup = B10000042 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B1000002F /* BibleStories */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B1000002E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000003 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B1000002C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000001 /* BibleStoriesApp.swift in Sources */,
+				B10000002 /* ContentView.swift in Sources */,
+				B10000004 /* Book.swift in Sources */,
+				B10000005 /* StoryPage.swift in Sources */,
+				B10000006 /* AppColors.swift in Sources */,
+				B10000007 /* StickerStyle.swift in Sources */,
+				B10000008 /* StickerButton.swift in Sources */,
+				B10000009 /* LockOverlay.swift in Sources */,
+				B1000000A /* GiftBadge.swift in Sources */,
+				B1000000B /* CelestialVaultBackground.swift in Sources */,
+				B1000000C /* LibraryViewModel.swift in Sources */,
+				B1000000D /* BookCoverView.swift in Sources */,
+				B1000000E /* LibraryView.swift in Sources */,
+				B1000000F /* Book3DFlipModifier.swift in Sources */,
+				B10000010 /* TransitionCoordinator.swift in Sources */,
+				B10000021 /* BookOpeningView.swift in Sources */,
+				B10000023 /* AudioNarrationPlayer.swift in Sources */,
+				B10000025 /* PageFlipGesture.swift in Sources */,
+				B10000027 /* StoryPageView.swift in Sources */,
+				B10000029 /* StoryReaderView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B10000053 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B10000054 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B10000055 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BibleStories/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bible Stories";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.biblestories.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B10000056 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BibleStories/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bible Stories";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.biblestories.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B10000050 /* Build configuration list for PBXNativeTarget "BibleStories" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B10000055 /* Debug */,
+				B10000056 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B10000052 /* Build configuration list for PBXProject "BibleStories" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B10000053 /* Debug */,
+				B10000054 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B10000051 /* Project object */;
+}
