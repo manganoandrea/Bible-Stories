@@ -51,7 +51,7 @@ struct BookOpeningView: View {
 
     private var showSpread: Bool {
         switch phase {
-        case .revealing, .zooming, .complete, .closing, .unzooming:
+        case .revealing, .zooming, .modeSelection, .complete, .closing, .unzooming:
             return true
         default:
             return false
@@ -76,7 +76,7 @@ struct BookOpeningView: View {
             return coordinator.centeredBookSize
         case .revealing, .unzooming:
             return coordinator.readerSize
-        case .zooming, .complete, .closing:
+        case .zooming, .modeSelection, .complete, .closing:
             // Scale up for zoom effect
             return CGSize(
                 width: coordinator.readerSize.width * zoomScale,
@@ -89,7 +89,7 @@ struct BookOpeningView: View {
         switch phase {
         case .idle, .selected, .returning:
             return CGPoint(x: originalFrame.midX, y: originalFrame.midY)
-        case .moving, .flipping, .unflipping, .revealing, .zooming, .complete, .closing, .unzooming:
+        case .moving, .flipping, .unflipping, .revealing, .zooming, .modeSelection, .complete, .closing, .unzooming:
             return coordinator.screenCenter
         }
     }

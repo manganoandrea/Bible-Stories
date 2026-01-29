@@ -88,6 +88,7 @@ struct ContentView: View {
                 LibraryView(
                     viewModel: viewModel,
                     namespace: bookAnimation,
+                    selectedBookId: selectedBook?.id,
                     onBookTapped: { book, frame in
                         handleBookTap(book, frame: frame)
                     }

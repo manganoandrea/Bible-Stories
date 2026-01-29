@@ -20,12 +20,25 @@ struct StoryPageView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
+                // Full-bleed illustration (always)
+                pageImage(size: geometry.size)
+
+                // Optional frame border overlay
                 if showFrame {
-                    // Framed illustration with adaptive color
-                    framedContent(size: geometry.size)
-                } else {
-                    // Full-bleed illustration (immersive mode)
-                    fullBleedContent(size: geometry.size)
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(frameColor, lineWidth: 6)
+                        .padding(4)
+                }
+
+                // Text overlay at bottom (only when UI visible)
+                if showFrame {
+                    VStack {
+                        Spacer()
+
+                        textOverlay
+                            .frame(maxWidth: geometry.size.width * 0.85)
+                            .padding(.bottom, 100)
+                    }
                 }
             }
         }
@@ -39,65 +52,6 @@ struct StoryPageView: View {
         .onChange(of: page.imageAsset) { _, _ in
             withAnimation(.easeInOut(duration: 0.3)) {
                 extractFrameColor()
-            }
-        }
-    }
-
-    // MARK: - Content Views
-
-    @ViewBuilder
-    private func framedContent(size: CGSize) -> some View {
-        let frameWidth: CGFloat = 12
-        let framePadding: CGFloat = 16
-        let availableSize = CGSize(
-            width: size.width - (frameWidth + framePadding) * 2,
-            height: size.height - (frameWidth + framePadding) * 2
-        )
-
-        ZStack {
-            // Background
-            Color.black.opacity(0.9)
-
-            VStack {
-                // Framed image
-                pageImage(size: availableSize)
-                    .frame(width: availableSize.width, height: availableSize.height * 0.75)
-                    .adaptiveFrame(color: frameColor, width: frameWidth)
-
-                Spacer()
-
-                // Text overlay below frame
-                textOverlay
-                    .frame(maxWidth: size.width * 0.85)
-                    .padding(.bottom, 24)
-            }
-            .padding(.top, framePadding)
-
-            // Play indicator (top right of frame)
-            if !isPlaying {
-                playIndicator
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func fullBleedContent(size: CGSize) -> some View {
-        ZStack {
-            // Full-bleed illustration
-            pageImage(size: size)
-
-            // Text overlay at bottom
-            VStack {
-                Spacer()
-
-                textOverlay
-                    .frame(maxWidth: size.width * 0.85)
-                    .padding(.bottom, 80)
-            }
-
-            // Play indicator
-            if !isPlaying {
-                playIndicator
             }
         }
     }

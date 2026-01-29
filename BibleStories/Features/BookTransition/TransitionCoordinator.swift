@@ -22,12 +22,25 @@ struct TransitionCoordinator {
         CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
     }
 
-    // Final reader size (full screen with padding)
+    // Final reader size (landscape spread that fits within screen)
     var readerSize: CGSize {
-        CGSize(
-            width: screenSize.width - 48,
-            height: screenSize.height - 48
-        )
+        // A two-page spread has roughly 2:1.4 aspect ratio (width:height) = ~1.43 landscape
+        let spreadAspectRatio: CGFloat = 2.0 / 1.4
+
+        // Calculate size that fits within screen with padding
+        let availableWidth = screenSize.width - 48
+        let availableHeight = screenSize.height - 100  // More vertical padding for UI controls
+
+        let widthForHeight = availableHeight * spreadAspectRatio
+        let heightForWidth = availableWidth / spreadAspectRatio
+
+        if widthForHeight <= availableWidth {
+            // Height-constrained: use full available height
+            return CGSize(width: widthForHeight, height: availableHeight)
+        } else {
+            // Width-constrained: use full available width
+            return CGSize(width: availableWidth, height: heightForWidth)
+        }
     }
 
     // Calculate interpolated position

@@ -44,7 +44,7 @@ struct Book: Identifiable, Equatable {
 extension Book {
     static let adamAndEve = Book(
         title: "Adam and Eve",
-        coverImage: "page_00",
+        coverImage: "adam_eve_cover",
         pages: [
             StoryPage(
                 imageAsset: "page_00",

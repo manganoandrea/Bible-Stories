@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		122108CC9CB10EFE459C646A /* Book3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654A7F910B6C3D9174713D21 /* Book3DView.swift */; };
+		25AB268B12F97013C90E772D /* StoryModeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16171C06B90F8D56661580F0 /* StoryModeSelectionView.swift */; };
 		B10000001 /* BibleStoriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000011 /* BibleStoriesApp.swift */; };
 		B10000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000012 /* ContentView.swift */; };
 		B10000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000013 /* Assets.xcassets */; };
@@ -29,12 +30,20 @@
 		B10000025 /* PageFlipGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000026 /* PageFlipGesture.swift */; };
 		B10000027 /* StoryPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000028 /* StoryPageView.swift */; };
 		B10000029 /* StoryReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002A /* StoryReaderView.swift */; };
+		B48CACA3F2868AEC5C196107 /* PageGridOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8974EB94EBC60687B7FE42 /* PageGridOverlay.swift */; };
+		C955F9765613D85A9E37BCB8 /* AdaptiveFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F6F6C40CAC4490A5040C0E /* AdaptiveFrame.swift */; };
 		D2BCFB25BE29F8EA1ACF037A /* UIImage+ColorExtraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */; };
+		DD19FD6437A4FE6094E6BFF4 /* PhysicalBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC6C147F69A27DE49AF6A35 /* PhysicalBookView.swift */; };
+		E1A2B3C4D5E6F7081234ABCD /* UIImage+Split.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D5E6F7081234ABCE /* UIImage+Split.swift */; };
+		F080715D48472F240FB6C8F5 /* LibraryMusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E85263DA1ABE5BA52EDC11 /* LibraryMusicPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		16171C06B90F8D56661580F0 /* StoryModeSelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoryModeSelectionView.swift; sourceTree = "<group>"; };
 		242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorExtraction.swift"; sourceTree = "<group>"; };
+		27F6F6C40CAC4490A5040C0E /* AdaptiveFrame.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdaptiveFrame.swift; sourceTree = "<group>"; };
 		654A7F910B6C3D9174713D21 /* Book3DView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Book3DView.swift; sourceTree = "<group>"; };
+		9DC6C147F69A27DE49AF6A35 /* PhysicalBookView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhysicalBookView.swift; sourceTree = "<group>"; };
 		B10000011 /* BibleStoriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleStoriesApp.swift; sourceTree = "<group>"; };
 		B10000012 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B10000013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,6 +66,9 @@
 		B10000028 /* StoryPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryPageView.swift; sourceTree = "<group>"; };
 		B1000002A /* StoryReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryReaderView.swift; sourceTree = "<group>"; };
 		B10000030 /* BibleStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BibleStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8E85263DA1ABE5BA52EDC11 /* LibraryMusicPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LibraryMusicPlayer.swift; sourceTree = "<group>"; };
+		E1A2B3C4D5E6F7081234ABCE /* UIImage+Split.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImage+Split.swift"; sourceTree = "<group>"; };
+		EF8974EB94EBC60687B7FE42 /* PageGridOverlay.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PageGridOverlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */,
+				E1A2B3C4D5E6F7081234ABCE /* UIImage+Split.swift */,
 			);
 			name = Extensions;
 			path = Extensions;
@@ -143,6 +156,7 @@
 				B10000018 /* StickerButton.swift */,
 				B10000019 /* LockOverlay.swift */,
 				B1000001A /* GiftBadge.swift */,
+				27F6F6C40CAC4490A5040C0E /* AdaptiveFrame.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -171,6 +185,8 @@
 				B1000001D /* BookCoverView.swift */,
 				B1000001B /* CelestialVaultBackground.swift */,
 				B1000001C /* LibraryViewModel.swift */,
+				C8E85263DA1ABE5BA52EDC11 /* LibraryMusicPlayer.swift */,
+				9DC6C147F69A27DE49AF6A35 /* PhysicalBookView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -193,6 +209,8 @@
 				B10000028 /* StoryPageView.swift */,
 				B10000024 /* AudioNarrationPlayer.swift */,
 				B10000026 /* PageFlipGesture.swift */,
+				16171C06B90F8D56661580F0 /* StoryModeSelectionView.swift */,
+				EF8974EB94EBC60687B7FE42 /* PageGridOverlay.swift */,
 			);
 			path = StoryReader;
 			sourceTree = "<group>";
@@ -288,6 +306,12 @@
 				B10000029 /* StoryReaderView.swift in Sources */,
 				D2BCFB25BE29F8EA1ACF037A /* UIImage+ColorExtraction.swift in Sources */,
 				122108CC9CB10EFE459C646A /* Book3DView.swift in Sources */,
+				E1A2B3C4D5E6F7081234ABCD /* UIImage+Split.swift in Sources */,
+				C955F9765613D85A9E37BCB8 /* AdaptiveFrame.swift in Sources */,
+				F080715D48472F240FB6C8F5 /* LibraryMusicPlayer.swift in Sources */,
+				25AB268B12F97013C90E772D /* StoryModeSelectionView.swift in Sources */,
+				B48CACA3F2868AEC5C196107 /* PageGridOverlay.swift in Sources */,
+				DD19FD6437A4FE6094E6BFF4 /* PhysicalBookView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

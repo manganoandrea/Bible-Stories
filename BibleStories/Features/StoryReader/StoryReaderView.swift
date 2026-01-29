@@ -30,68 +30,70 @@ struct StoryReaderView: View {
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Page content with swipe gesture
-                TabView(selection: $currentPage) {
-                    ForEach(Array(book.pages.enumerated()), id: \.element.id) { index, page in
-                        StoryPageView(
-                            page: page,
-                            pageNumber: index,
-                            totalPages: book.pages.count,
-                            isPlaying: audioPlayer.isPlaying && currentPage == index,
-                            showFrame: !isUIHidden,
-                            onTapToPlay: {
-                                toggleUIVisibility()
-                            }
-                        )
-                        .tag(index)
-                    }
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
+        ZStack {
+            // Solid background to prevent any black showing through
+            Color.black
                 .ignoresSafeArea()
 
-                // UI Overlay (hidden in immersive mode)
-                if !isUIHidden {
-                    VStack {
-                        // Top bar
-                        topBar
-                            .padding(.horizontal, 24)
-                            .padding(.top, 16)
-
-                        Spacer()
-
-                        // Bottom controls
-                        bottomControls
-                            .padding(.bottom, 24)
-                    }
-                    .transition(.opacity)
-                }
-
-                // Audio playing indicator (visible even when UI hidden)
-                if isUIHidden && audioPlayer.isPlaying {
-                    audioPlayingIndicator
-                }
-
-                // Page Grid Overlay
-                if showingPageGrid {
-                    PageGridOverlay(
-                        book: book,
-                        currentPage: currentPage,
-                        onPageSelected: { page in
-                            currentPage = page
-                            withAnimation(.easeOut(duration: 0.3)) {
-                                showingPageGrid = false
-                            }
-                        },
-                        onClose: {
-                            withAnimation(.easeOut(duration: 0.3)) {
-                                showingPageGrid = false
-                            }
+            // Page content with swipe gesture
+            TabView(selection: $currentPage) {
+                ForEach(Array(book.pages.enumerated()), id: \.element.id) { index, page in
+                    StoryPageView(
+                        page: page,
+                        pageNumber: index,
+                        totalPages: book.pages.count,
+                        isPlaying: audioPlayer.isPlaying && currentPage == index,
+                        showFrame: !isUIHidden,
+                        onTapToPlay: {
+                            toggleUIVisibility()
                         }
                     )
-                    .transition(.opacity)
+                    .tag(index)
                 }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            .ignoresSafeArea()
+
+            // UI Overlay (hidden in immersive mode)
+            if !isUIHidden {
+                VStack {
+                    // Top bar
+                    topBar
+                        .padding(.horizontal, 24)
+                        .padding(.top, 16)
+
+                    Spacer()
+
+                    // Bottom controls
+                    bottomControls
+                        .padding(.bottom, 24)
+                }
+                .transition(.opacity)
+            }
+
+            // Audio playing indicator (visible even when UI hidden)
+            if isUIHidden && audioPlayer.isPlaying {
+                audioPlayingIndicator
+            }
+
+            // Page Grid Overlay
+            if showingPageGrid {
+                PageGridOverlay(
+                    book: book,
+                    currentPage: currentPage,
+                    onPageSelected: { page in
+                        currentPage = page
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            showingPageGrid = false
+                        }
+                    },
+                    onClose: {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            showingPageGrid = false
+                        }
+                    }
+                )
+                .transition(.opacity)
             }
         }
         .onChange(of: currentPage) { _, newPage in
