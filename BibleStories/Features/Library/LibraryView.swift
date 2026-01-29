@@ -10,7 +10,7 @@ import SwiftUI
 struct LibraryView: View {
     @Bindable var viewModel: LibraryViewModel
     let namespace: Namespace.ID
-    let onBookTapped: (Book) -> Void
+    let onBookTapped: (Book, CGRect) -> Void
 
     var body: some View {
         ZStack {
@@ -41,8 +41,8 @@ struct LibraryView: View {
                             BookCoverView(
                                 book: book,
                                 namespace: namespace,
-                                onTap: {
-                                    onBookTapped(book)
+                                onTap: { frame in
+                                    onBookTapped(book, frame)
                                 }
                             )
                         }
@@ -95,6 +95,6 @@ struct LibraryView: View {
     LibraryView(
         viewModel: LibraryViewModel(),
         namespace: namespace,
-        onBookTapped: { _ in }
+        onBookTapped: { _, _ in }
     )
 }

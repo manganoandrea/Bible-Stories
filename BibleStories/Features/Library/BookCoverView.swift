@@ -10,32 +10,35 @@ import SwiftUI
 struct BookCoverView: View {
     let book: Book
     let namespace: Namespace.ID
-    let onTap: () -> Void
-
-    @State private var isPressed = false
+    let onTap: (CGRect) -> Void
 
     var body: some View {
-        StickerButton(action: onTap) {
-            ZStack(alignment: .topTrailing) {
-                // Book cover image
-                coverImage
-                    .matchedGeometryEffect(id: "cover-\(book.id)", in: namespace)
+        GeometryReader { geometry in
+            StickerButton(action: {
+                let frame = geometry.frame(in: .global)
+                onTap(frame)
+            }) {
+                ZStack(alignment: .topTrailing) {
+                    // Book cover image
+                    coverImage
+                        .matchedGeometryEffect(id: "cover-\(book.id)", in: namespace)
 
-                // Lock overlay for locked books
-                if book.isLocked {
-                    LockOverlay(cornerRadius: 16)
-                }
+                    // Lock overlay for locked books
+                    if book.isLocked {
+                        LockOverlay(cornerRadius: 16)
+                    }
 
-                // Gift badge for mascot rewards
-                if book.hasMascotReward && !book.isLocked {
-                    GiftBadge(mascotName: book.mascotName, size: 36)
-                        .offset(x: 8, y: -8)
+                    // Gift badge for mascot rewards
+                    if book.hasMascotReward && !book.isLocked {
+                        GiftBadge(mascotName: book.mascotName, size: 36)
+                            .offset(x: 8, y: -8)
+                    }
                 }
+                .stickerBorder(cornerRadius: 16, borderWidth: book.isLocked ? 2 : 3)
+                .opacity(book.isLocked ? 0.7 : 1.0)
             }
-            .frame(width: 200, height: 280)
-            .stickerBorder(cornerRadius: 16, borderWidth: book.isLocked ? 2 : 3)
-            .opacity(book.isLocked ? 0.7 : 1.0)
         }
+        .frame(width: 200, height: 280)
     }
 
     @ViewBuilder
@@ -77,13 +80,13 @@ struct BookCoverView: View {
             BookCoverView(
                 book: .adamAndEve,
                 namespace: Namespace().wrappedValue,
-                onTap: {}
+                onTap: { _ in }
             )
 
             BookCoverView(
                 book: .noahsArk,
                 namespace: Namespace().wrappedValue,
-                onTap: {}
+                onTap: { _ in }
             )
         }
     }
