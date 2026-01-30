@@ -2,7 +2,7 @@
 //  BookOpeningView.swift
 //  BibleStories
 //
-//  Orchestrates opening and closing book animations with 3D effects and spread display.
+//  Orchestrates opening and closing book animations using AnimatedBookView.
 //
 
 import SwiftUI
@@ -16,28 +16,26 @@ struct BookOpeningView: View {
 
     @State private var flipAngle: Double = 0
     @State private var coverImage: UIImage?
-    @State private var leftHalfImage: UIImage?
-    @State private var rightHalfImage: UIImage?
+    @State private var firstPageImage: UIImage?
 
-    private var coordinator: TransitionCoordinator {
-        TransitionCoordinator(screenSize: screenSize)
-    }
+    // MARK: - Constants
 
-    private let baseSpineWidth: CGFloat = 18 // Thicker base for more prominent 3D effect
-    private let bookCoverSize = CGSize(width: 200, height: 280)
-    private let bookSelectedScale: CGFloat = 1.05
-    private let zoomScaleFactor: CGFloat = 0.95
+    private let bookSize = CGSize(width: 191, height: 212)
+    private let selectedScale: CGFloat = 1.05
+    private let centerScale: CGFloat = 1.8
+    private let spreadScale: CGFloat = 2.2
+
+    // MARK: - Body
 
     var body: some View {
-        Book3DView(
+        AnimatedBookView(
             coverImage: coverImage,
-            leftHalfImage: leftHalfImage,
-            rightHalfImage: rightHalfImage,
+            firstPageImage: firstPageImage,
             size: currentSize,
             flipAngle: flipAngle,
-            spineWidth: currentSpineWidth,
             showSpread: showSpread
         )
+        .scaleEffect(currentScale)
         .position(currentPosition)
         .onChange(of: phase) { _, newPhase in
             handlePhaseChange(newPhase)
@@ -58,89 +56,101 @@ struct BookOpeningView: View {
         }
     }
 
-    private var zoomScale: CGFloat {
-        let targetWidth = screenSize.width * zoomScaleFactor
-        return targetWidth / coordinator.readerSize.width
+    private var currentSize: CGSize {
+        bookSize  // Base size, scaling handled by scaleEffect
     }
 
-    private var currentSize: CGSize {
+    private var currentScale: CGFloat {
         switch phase {
-        case .idle, .returning:
-            return bookCoverSize
+        case .idle:
+            return 1.0
         case .selected:
-            return CGSize(
-                width: bookCoverSize.width * bookSelectedScale,
-                height: bookCoverSize.height * bookSelectedScale
-            )
-        case .moving, .flipping, .unflipping:
-            return coordinator.centeredBookSize
-        case .revealing, .unzooming:
-            return coordinator.readerSize
-        case .zooming, .modeSelection, .complete, .closing:
-            // Scale up for zoom effect
-            return CGSize(
-                width: coordinator.readerSize.width * zoomScale,
-                height: coordinator.readerSize.height * zoomScale
-            )
+            return selectedScale
+        case .moving:
+            return centerScale
+        case .flipping:
+            return centerScale
+        case .revealing:
+            return spreadScale
+        case .zooming, .modeSelection, .complete:
+            return screenScale
+        case .closing:
+            return spreadScale
+        case .unzooming:
+            return spreadScale
+        case .unflipping:
+            return centerScale
+        case .returning:
+            return 1.0
         }
+    }
+
+    private var screenScale: CGFloat {
+        // Scale to fill screen width with the spread
+        let spreadWidth = bookSize.width * 2
+        return (screenSize.width * 0.95) / spreadWidth
     }
 
     private var currentPosition: CGPoint {
         switch phase {
         case .idle, .selected, .returning:
             return CGPoint(x: originalFrame.midX, y: originalFrame.midY)
-        case .moving, .flipping, .unflipping, .revealing, .zooming, .modeSelection, .complete, .closing, .unzooming:
-            return coordinator.screenCenter
+        default:
+            return CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         }
-    }
-
-    private var currentSpineWidth: CGFloat {
-        let scale = currentSize.width / bookCoverSize.width
-        return baseSpineWidth * scale
     }
 
     // MARK: - Methods
 
     private func loadImages() {
         coverImage = UIImage(named: book.coverImage)
-        if let firstPage = book.pages.first,
-           let pageImage = UIImage(named: firstPage.imageAsset) {
-            leftHalfImage = pageImage.leftHalf()
-            rightHalfImage = pageImage.rightHalf()
+        if let firstPage = book.pages.first {
+            firstPageImage = UIImage(named: firstPage.imageAsset)
         }
     }
 
     private func handlePhaseChange(_ newPhase: ContentView.AnimationPhase) {
         switch newPhase {
         // Opening phases
+        case .selected:
+            // Just scale feedback, no flip
+            break
+
+        case .moving:
+            // Move to center, no flip yet
+            break
+
         case .flipping:
-            withAnimation(.spring(duration: 0.6, bounce: 0.1)) {
+            withAnimation(.spring(duration: 0.7, bounce: 0.05)) {
                 flipAngle = 180
             }
+
         case .revealing:
-            // Spread is now visible, wait for zoom phase
+            // Spread is visible, prepare for zoom
             break
+
         case .zooming:
-            // Zoom handled by currentSize, trigger completion after animation
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [self] in
+            // Zoom to fullscreen, then complete
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 guard phase == .zooming else { return }
                 onComplete()
             }
 
         // Closing phases
-        case .unzooming:
-            // Library starts returning, book still visible
-            break
         case .closing:
-            // Book appears at full flip (already open)
-            flipAngle = 180
+            flipAngle = 180  // Ensure we're at open position
+
         case .unflipping:
-            withAnimation(.spring(duration: 0.6, bounce: 0.05)) {
+            withAnimation(.spring(duration: 0.7, bounce: 0.05)) {
                 flipAngle = 0
             }
+
         case .returning:
-            // Size and position animate via currentSize/currentPosition
+            // Moving back to original position
             break
+
+        case .idle:
+            flipAngle = 0
 
         default:
             break
@@ -149,23 +159,32 @@ struct BookOpeningView: View {
 }
 
 #Preview {
-    @Previewable @State var phase: ContentView.AnimationPhase = .moving
+    @Previewable @State var phase: ContentView.AnimationPhase = .idle
 
     ZStack {
-        AppColors.celestialGradient
+        CelestialVaultBackground()
             .ignoresSafeArea()
 
         BookOpeningView(
             book: .adamAndEve,
             phase: $phase,
             screenSize: CGSize(width: 1024, height: 768),
-            originalFrame: CGRect(x: 100, y: 200, width: 200, height: 280),
+            originalFrame: CGRect(x: 200, y: 300, width: 191, height: 212),
             onComplete: {}
         )
-    }
-    .onAppear {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            phase = .flipping
+
+        VStack {
+            Spacer()
+            HStack(spacing: 20) {
+                Button("Idle") { phase = .idle }
+                Button("Selected") { phase = .selected }
+                Button("Moving") { phase = .moving }
+                Button("Flipping") { phase = .flipping }
+                Button("Revealing") { phase = .revealing }
+                Button("Zooming") { phase = .zooming }
+            }
+            .padding()
+            .background(.ultraThinMaterial)
         }
     }
 }

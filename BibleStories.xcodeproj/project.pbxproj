@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		122108CC9CB10EFE459C646A /* Book3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654A7F910B6C3D9174713D21 /* Book3DView.swift */; };
 		25AB268B12F97013C90E772D /* StoryModeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16171C06B90F8D56661580F0 /* StoryModeSelectionView.swift */; };
+		509C46662FE9126C0E7F51C2 /* AnimatedBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B122B0C4E3CB94474FF969F /* AnimatedBookView.swift */; };
 		B10000001 /* BibleStoriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000011 /* BibleStoriesApp.swift */; };
 		B10000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000012 /* ContentView.swift */; };
 		B10000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000013 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B122B0C4E3CB94474FF969F /* AnimatedBookView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnimatedBookView.swift; sourceTree = "<group>"; };
 		16171C06B90F8D56661580F0 /* StoryModeSelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoryModeSelectionView.swift; sourceTree = "<group>"; };
 		242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorExtraction.swift"; sourceTree = "<group>"; };
 		27F6F6C40CAC4490A5040C0E /* AdaptiveFrame.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdaptiveFrame.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				B1000001F /* Book3DFlipModifier.swift */,
 				B10000020 /* TransitionCoordinator.swift */,
 				654A7F910B6C3D9174713D21 /* Book3DView.swift */,
+				0B122B0C4E3CB94474FF969F /* AnimatedBookView.swift */,
 			);
 			path = BookTransition;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				25AB268B12F97013C90E772D /* StoryModeSelectionView.swift in Sources */,
 				B48CACA3F2868AEC5C196107 /* PageGridOverlay.swift in Sources */,
 				DD19FD6437A4FE6094E6BFF4 /* PhysicalBookView.swift in Sources */,
+				509C46662FE9126C0E7F51C2 /* AnimatedBookView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

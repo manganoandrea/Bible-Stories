@@ -17,15 +17,17 @@ struct ContentView: View {
     @State private var originalBookFrame: CGRect = .zero
     @Namespace private var bookAnimation
 
-    // MARK: - Animation Timing Constants
-    private let openingPhase1Delay: Double = 0.2
-    private let openingPhase2Delay: Double = 0.6
-    private let openingPhase3Delay: Double = 1.2
-    private let closingPhase2Delay: Double = 0.3
-    private let closingPhase3Delay: Double = 0.9
-    private let closingPhase4Delay: Double = 1.3
-    private let openingZoomDelay: Double = 1.5
-    private let closingUnzoomDelay: Double = 0.1
+    // MARK: - Animation Timing Constants (smoother, tighter timing)
+    private let selectedDuration: Double = 0.15
+    private let movingDelay: Double = 0.15
+    private let flippingDelay: Double = 0.5
+    private let revealingDelay: Double = 1.2
+    private let zoomingDelay: Double = 1.5
+
+    private let closingDelay: Double = 0.1
+    private let unflippingDelay: Double = 0.4
+    private let returningDelay: Double = 1.1
+    private let idleDelay: Double = 1.5
 
     enum AnimationPhase: Equatable {
         // Opening phases
@@ -173,34 +175,34 @@ struct ContentView: View {
         // Fade out library music
         viewModel.fadeOutMusic()
 
-        // Start animation sequence
-        withAnimation(.spring(duration: 0.2)) {
+        // Phase 1: Selected - quick scale feedback
+        withAnimation(.spring(duration: selectedDuration)) {
             animationPhase = .selected
         }
 
-        // Phase 2: Move to center
-        DispatchQueue.main.asyncAfter(deadline: .now() + openingPhase1Delay) {
-            withAnimation(.spring(duration: 0.4, bounce: 0.2)) {
+        // Phase 2: Moving - book moves to center
+        DispatchQueue.main.asyncAfter(deadline: .now() + movingDelay) {
+            withAnimation(.spring(duration: 0.35, bounce: 0.15)) {
                 animationPhase = .moving
             }
         }
 
-        // Phase 3: Flip
-        DispatchQueue.main.asyncAfter(deadline: .now() + openingPhase2Delay) {
-            withAnimation(.spring(duration: 0.6, bounce: 0.1)) {
+        // Phase 3: Flipping - cover flips open
+        DispatchQueue.main.asyncAfter(deadline: .now() + flippingDelay) {
+            withAnimation(.spring(duration: 0.7, bounce: 0.05)) {
                 animationPhase = .flipping
             }
         }
 
-        // Phase 4: Reveal
-        DispatchQueue.main.asyncAfter(deadline: .now() + openingPhase3Delay) {
-            withAnimation(.spring(duration: 0.3)) {
+        // Phase 4: Revealing - spread fully visible
+        DispatchQueue.main.asyncAfter(deadline: .now() + revealingDelay) {
+            withAnimation(.easeOut(duration: 0.3)) {
                 animationPhase = .revealing
             }
         }
 
-        // Phase 5: Zoom into spread
-        DispatchQueue.main.asyncAfter(deadline: .now() + openingZoomDelay) {
+        // Phase 5: Zooming - spread fills screen
+        DispatchQueue.main.asyncAfter(deadline: .now() + zoomingDelay) {
             withAnimation(.easeInOut(duration: 0.4)) {
                 animationPhase = .zooming
             }
@@ -208,37 +210,37 @@ struct ContentView: View {
     }
 
     private func closeBook() {
-        // Phase 1: Unzoom - library starts returning
+        // Phase 1: Unzoom - start scaling down
         withAnimation(.easeOut(duration: 0.3)) {
             showingReader = false
             showingModeSelection = false
             animationPhase = .unzooming
         }
 
-        // Phase 2: Closing - book appears at spread
-        DispatchQueue.main.asyncAfter(deadline: .now() + closingUnzoomDelay) {
-            withAnimation(.easeOut(duration: 0.3)) {
+        // Phase 2: Closing - book at spread size
+        DispatchQueue.main.asyncAfter(deadline: .now() + closingDelay) {
+            withAnimation(.easeOut(duration: 0.25)) {
                 animationPhase = .closing
             }
         }
 
-        // Phase 3: Unflipping - book cover flips closed
-        DispatchQueue.main.asyncAfter(deadline: .now() + closingPhase2Delay) {
-            withAnimation(.spring(duration: 0.6, bounce: 0.05)) {
+        // Phase 3: Unflipping - cover flips back closed
+        DispatchQueue.main.asyncAfter(deadline: .now() + unflippingDelay) {
+            withAnimation(.spring(duration: 0.7, bounce: 0.05)) {
                 animationPhase = .unflipping
             }
         }
 
-        // Phase 4: Returning - book shrinks and moves back
-        DispatchQueue.main.asyncAfter(deadline: .now() + closingPhase3Delay) {
-            withAnimation(.spring(duration: 0.4, bounce: 0.15)) {
+        // Phase 4: Returning - book moves back to grid
+        DispatchQueue.main.asyncAfter(deadline: .now() + returningDelay) {
+            withAnimation(.spring(duration: 0.35, bounce: 0.1)) {
                 animationPhase = .returning
             }
         }
 
-        // Phase 5: Idle - complete
-        DispatchQueue.main.asyncAfter(deadline: .now() + closingPhase4Delay) {
-            withAnimation(.easeOut(duration: 0.2)) {
+        // Phase 5: Idle - animation complete
+        DispatchQueue.main.asyncAfter(deadline: .now() + idleDelay) {
+            withAnimation(.easeOut(duration: 0.15)) {
                 animationPhase = .idle
                 selectedBook = nil
             }
