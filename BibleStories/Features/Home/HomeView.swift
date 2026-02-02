@@ -42,37 +42,24 @@ struct HomeView: View {
 
                     Spacer()
 
-                    // Mascot and Books row - aligned at bottom
-                    HStack(alignment: .bottom, spacing: 16) {
-                        // Mascot - Figma: 266x266
-                        Group {
-                            if let url = Bundle.main.url(forResource: "lion_mascot", withExtension: "mov") {
-                                TransparentVideoPlayer(url: url)
-                            } else {
-                                Text("🦁").font(.system(size: 100))
+                    // Books carousel - independent of mascot
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(Array(books.enumerated()), id: \.element.id) { index, book in
+                                HomeBookCard(
+                                    book: book,
+                                    color: [AppColors.bookOrange, AppColors.bookPurple, AppColors.bookCyan, AppColors.bookCyan][index % 4],
+                                    size: CGSize(width: 184, height: 184),
+                                    onTap: { onBookTapped(book) }
+                                )
                             }
                         }
-                        .frame(width: 266, height: 266)
-
-                        // Books carousel - Figma: 184x184 books, 8px spacing
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 8) {
-                                ForEach(Array(books.enumerated()), id: \.element.id) { index, book in
-                                    HomeBookCard(
-                                        book: book,
-                                        color: [AppColors.bookOrange, AppColors.bookPurple, AppColors.bookCyan, AppColors.bookCyan][index % 4],
-                                        size: CGSize(width: 184, height: 184),
-                                        onTap: { onBookTapped(book) }
-                                    )
-                                }
-                            }
-                            .padding(.trailing, safeArea.trailing + 24)
-                        }
+                        .padding(.leading, safeArea.leading + 300)
+                        .padding(.trailing, safeArea.trailing + 24)
                     }
-                    .padding(.leading, safeArea.leading + 20)
                     .padding(.bottom, 24)
 
-                    // Unlock button - Figma: 212x40, centered
+                    // Unlock button - centered
                     StickerButton(action: onUnlockTapped) {
                         HStack(spacing: 8) {
                             Image(systemName: "lock.fill")
@@ -89,8 +76,22 @@ struct HomeView: View {
                                 .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
                         )
                     }
-                    .padding(.bottom, safeArea.bottom + 20)
+                    .padding(.bottom, safeArea.bottom + 24)
                 }
+
+                // Mascot - absolute position using geo coordinates
+                Group {
+                    if let url = Bundle.main.url(forResource: "lion_mascot", withExtension: "mov") {
+                        TransparentVideoPlayer(url: url)
+                    } else {
+                        Text("🦁").font(.system(size: 100))
+                    }
+                }
+                .frame(width: 266, height: 266)
+                .position(
+                    x: safeArea.leading + 153, // 20 + 133 (half width)
+                    y: geo.size.height - 75 // Feet aligned with ground
+                )
             }
         }
         .ignoresSafeArea()
