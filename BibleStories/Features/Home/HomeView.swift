@@ -27,7 +27,7 @@ struct HomeView: View {
                            height: geo.size.height + safeArea.top + safeArea.bottom)
                     .position(x: geo.size.width / 2, y: geo.size.height / 2)
 
-                // All content in single VStack
+                // Content layer
                 VStack(spacing: 0) {
                     // Top buttons
                     HStack {
@@ -42,46 +42,33 @@ struct HomeView: View {
 
                     Spacer()
 
-                    // Mascot and books - bottom aligned (lion standing on ground)
-                    HStack(alignment: .bottom, spacing: 0) {
-                        // Mascot - 266x266 as per Figma
-                        Group {
-                            if let url = Bundle.main.url(forResource: "lion_mascot", withExtension: "mov") {
-                                TransparentVideoPlayer(url: url)
-                            } else {
-                                Text("🦁").font(.system(size: 100))
+                    // Books carousel - Figma: 184x184 books, 8px spacing
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(Array(books.enumerated()), id: \.element.id) { index, book in
+                                HomeBookCard(
+                                    book: book,
+                                    color: [AppColors.bookOrange, AppColors.bookPurple, AppColors.bookCyan, AppColors.bookCyan][index % 4],
+                                    size: CGSize(width: 184, height: 184),
+                                    onTap: { onBookTapped(book) }
+                                )
                             }
                         }
-                        .frame(width: 266, height: 266)
-
-                        // Books - starts right after mascot
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 12) {
-                                ForEach(Array(books.enumerated()), id: \.element.id) { index, book in
-                                    HomeBookCard(
-                                        book: book,
-                                        color: [AppColors.bookOrange, AppColors.bookPurple, AppColors.bookCyan, AppColors.bookCyan][index % 4],
-                                        size: CGSize(width: 160, height: 160),
-                                        onTap: { onBookTapped(book) }
-                                    )
-                                }
-                            }
-                            .padding(.trailing, safeArea.trailing + 24)
-                        }
+                        .padding(.trailing, safeArea.trailing + 24)
                     }
-                    .padding(.leading, safeArea.leading + 20)
-                    .padding(.bottom, 24)
+                    .padding(.leading, safeArea.leading + 300) // Mascot (266) + gap (34)
+                    .padding(.bottom, 62) // Figma: ~62px from bottom to unlock button
 
-                    // Unlock button at bottom - centered
+                    // Unlock button - Figma: 212x40, centered, ~60px from bottom
                     StickerButton(action: onUnlockTapped) {
-                        HStack(spacing: 10) {
+                        HStack(spacing: 8) {
                             Image(systemName: "lock.fill")
+                                .font(.system(size: 16))
                             Text("Unlock all books")
                         }
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
-                        .padding(.horizontal, 32)
-                        .padding(.vertical, 12)
+                        .frame(width: 212, height: 40)
                         .background(
                             Capsule()
                                 .fill(LinearGradient(colors: [AppColors.unlockButtonOrange, AppColors.unlockButtonOrangeDark], startPoint: .top, endPoint: .bottom))
@@ -89,10 +76,24 @@ struct HomeView: View {
                                 .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
                         )
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.bottom, safeArea.bottom + 24)
+                    .padding(.bottom, safeArea.bottom + 20)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                // Mascot - Figma: 266x266, positioned bottom-left
+                VStack {
+                    Spacer()
+                    Group {
+                        if let url = Bundle.main.url(forResource: "lion_mascot", withExtension: "mov") {
+                            TransparentVideoPlayer(url: url)
+                        } else {
+                            Text("🦁").font(.system(size: 100))
+                        }
+                    }
+                    .frame(width: 266, height: 266)
+                    .padding(.bottom, 62) // Align with books bottom
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, safeArea.leading + 20)
             }
         }
         .ignoresSafeArea()
