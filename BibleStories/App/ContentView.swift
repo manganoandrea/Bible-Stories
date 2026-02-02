@@ -86,13 +86,20 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Library View (background when book is opening)
-                LibraryView(
-                    viewModel: viewModel,
-                    namespace: bookAnimation,
-                    selectedBookId: selectedBook?.id,
-                    onBookTapped: { book, frame in
-                        handleBookTap(book, frame: frame)
+                // Home View (main screen)
+                HomeView(
+                    books: viewModel.books,
+                    onBookTapped: { book in
+                        handleBookTap(book, frame: .zero)
+                    },
+                    onUnlockTapped: {
+                        // Handle unlock action (e.g., show paywall)
+                    },
+                    onMusicTapped: {
+                        viewModel.toggleMusic()
+                    },
+                    onSettingsTapped: {
+                        // Handle settings action
                     }
                 )
                 .scaleEffect(libraryScale)
@@ -158,7 +165,6 @@ struct ContentView: View {
                 }
             }
         }
-        .ignoresSafeArea()
         .statusBarHidden()
         .onAppear {
             viewModel.startMusic()

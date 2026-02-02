@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10000001 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000011 /* HomeView.swift */; };
+		A10000002 /* HomeBookCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000012 /* HomeBookCard.swift */; };
+		A10000003 /* TransparentVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000013 /* TransparentVideoPlayer.swift */; };
+		A10000004 /* lion_mascot.mov in Resources */ = {isa = PBXBuildFile; fileRef = A10000014 /* lion_mascot.mov */; };
 		122108CC9CB10EFE459C646A /* Book3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654A7F910B6C3D9174713D21 /* Book3DView.swift */; };
 		25AB268B12F97013C90E772D /* StoryModeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16171C06B90F8D56661580F0 /* StoryModeSelectionView.swift */; };
 		509C46662FE9126C0E7F51C2 /* AnimatedBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B122B0C4E3CB94474FF969F /* AnimatedBookView.swift */; };
@@ -40,6 +44,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A10000011 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A10000012 /* HomeBookCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBookCard.swift; sourceTree = "<group>"; };
+		A10000013 /* TransparentVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentVideoPlayer.swift; sourceTree = "<group>"; };
+		A10000014 /* lion_mascot.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = lion_mascot.mov; sourceTree = "<group>"; };
 		0B122B0C4E3CB94474FF969F /* AnimatedBookView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnimatedBookView.swift; sourceTree = "<group>"; };
 		16171C06B90F8D56661580F0 /* StoryModeSelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoryModeSelectionView.swift; sourceTree = "<group>"; };
 		242977AC1F63FB3359E8228C /* UIImage+ColorExtraction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorExtraction.swift"; sourceTree = "<group>"; };
@@ -136,11 +144,21 @@
 		B10000044 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				A1000004C /* Home */,
 				B10000049 /* Library */,
 				B1000004A /* BookTransition */,
 				B1000004B /* StoryReader */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		A1000004C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A10000011 /* HomeView.swift */,
+				A10000012 /* HomeBookCard.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		B10000045 /* Models */ = {
@@ -159,6 +177,7 @@
 				B10000019 /* LockOverlay.swift */,
 				B1000001A /* GiftBadge.swift */,
 				27F6F6C40CAC4490A5040C0E /* AdaptiveFrame.swift */,
+				A10000013 /* TransparentVideoPlayer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -176,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				B10000013 /* Assets.xcassets */,
+				A10000014 /* lion_mascot.mov */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -277,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B10000003 /* Assets.xcassets in Resources */,
+				A10000004 /* lion_mascot.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +310,9 @@
 			files = (
 				B10000001 /* BibleStoriesApp.swift in Sources */,
 				B10000002 /* ContentView.swift in Sources */,
+				A10000001 /* HomeView.swift in Sources */,
+				A10000002 /* HomeBookCard.swift in Sources */,
+				A10000003 /* TransparentVideoPlayer.swift in Sources */,
 				B10000004 /* Book.swift in Sources */,
 				B10000005 /* StoryPage.swift in Sources */,
 				B10000006 /* AppColors.swift in Sources */,

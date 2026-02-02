@@ -18,6 +18,14 @@ enum AppColors {
     static let warmOrange = Color(red: 1.0, green: 0.60, blue: 0.30)
     static let softPink = Color(red: 1.0, green: 0.75, blue: 0.80)
 
+    // MARK: - Home Screen Colors
+    static let homeButtonBlue = Color(red: 0.25, green: 0.55, blue: 0.95)
+    static let bookOrange = Color(red: 0.90, green: 0.65, blue: 0.45)  // #E6A672
+    static let bookPurple = Color(red: 0.64, green: 0.45, blue: 0.90)  // #A272E6
+    static let bookCyan = Color(red: 0.45, green: 0.79, blue: 0.90)    // #72C9E6
+    static let unlockButtonOrange = Color(red: 1.0, green: 0.34, blue: 0.0)  // #FF5700
+    static let unlockButtonOrangeDark = Color(red: 1.0, green: 0.22, blue: 0.0)  // #FF3800
+
     // MARK: - UI Colors
     static let stickerBorder = Color.white
     static let stickerShadow = Color.black.opacity(0.3)
