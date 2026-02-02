@@ -40,10 +40,10 @@ struct HomeView: View {
                     .padding(.top, safeArea.top + 16)
                     .padding(.trailing, safeArea.trailing + 24)
 
-                    Spacer(minLength: 80)
+                    Spacer()
 
                     // Mascot and books - bottom aligned (lion standing on ground)
-                    HStack(alignment: .bottom, spacing: 24) {
+                    HStack(alignment: .bottom, spacing: 0) {
                         // Mascot - 266x266 as per Figma
                         Group {
                             if let url = Bundle.main.url(forResource: "lion_mascot", withExtension: "mov") {
@@ -54,7 +54,7 @@ struct HomeView: View {
                         }
                         .frame(width: 266, height: 266)
 
-                        // Books
+                        // Books - starts right after mascot
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
                                 ForEach(Array(books.enumerated()), id: \.element.id) { index, book in
@@ -66,14 +66,13 @@ struct HomeView: View {
                                     )
                                 }
                             }
-                            .padding(.leading, 16)
                             .padding(.trailing, safeArea.trailing + 24)
                         }
                     }
-                    .padding(.leading, safeArea.leading + 24)
-                    .padding(.bottom, 16)
+                    .padding(.leading, safeArea.leading + 20)
+                    .padding(.bottom, 24)
 
-                    // Unlock button at bottom
+                    // Unlock button at bottom - centered
                     StickerButton(action: onUnlockTapped) {
                         HStack(spacing: 10) {
                             Image(systemName: "lock.fill")
@@ -90,8 +89,10 @@ struct HomeView: View {
                                 .shadow(color: .black.opacity(0.3), radius: 4, y: 2)
                         )
                     }
+                    .frame(maxWidth: .infinity)
                     .padding(.bottom, safeArea.bottom + 24)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .ignoresSafeArea()
