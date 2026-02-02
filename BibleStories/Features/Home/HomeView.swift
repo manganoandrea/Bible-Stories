@@ -90,7 +90,7 @@ struct HomeView: View {
                 .frame(width: 266, height: 266)
                 .position(
                     x: safeArea.leading + 153, // 20 + 133 (half width)
-                    y: geo.size.height - 75 // Feet aligned with ground
+                    y: geo.size.height - 133 - 30 // Center at 133 (half height) + 30px from bottom
                 )
             }
         }
