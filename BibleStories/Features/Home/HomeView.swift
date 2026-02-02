@@ -40,11 +40,11 @@ struct HomeView: View {
                     .padding(.top, safeArea.top + 16)
                     .padding(.trailing, safeArea.trailing + 24)
 
-                    Spacer()
+                    Spacer(minLength: 80)
 
-                    // Mascot and books - vertically centered
-                    HStack(alignment: .center, spacing: -20) {
-                        // Mascot
+                    // Mascot and books - bottom aligned (lion standing on ground)
+                    HStack(alignment: .bottom, spacing: 24) {
+                        // Mascot - 266x266 as per Figma
                         Group {
                             if let url = Bundle.main.url(forResource: "lion_mascot", withExtension: "mov") {
                                 TransparentVideoPlayer(url: url)
@@ -52,8 +52,7 @@ struct HomeView: View {
                                 Text("🦁").font(.system(size: 100))
                             }
                         }
-                        .frame(width: 200, height: 240)
-                        .zIndex(1)
+                        .frame(width: 266, height: 266)
 
                         // Books
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -67,14 +66,12 @@ struct HomeView: View {
                                     )
                                 }
                             }
-                            .padding(.leading, 40)
+                            .padding(.leading, 16)
                             .padding(.trailing, safeArea.trailing + 24)
                         }
-                        .zIndex(0)
                     }
                     .padding(.leading, safeArea.leading + 24)
-
-                    Spacer()
+                    .padding(.bottom, 16)
 
                     // Unlock button at bottom
                     StickerButton(action: onUnlockTapped) {
